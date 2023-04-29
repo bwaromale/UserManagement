@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using System.Text;
 using UserManagement_DataAccess;
 using Usermanagement_Domain.DTOs;
 using Usermanagement_Domain.Interfaces;
@@ -13,11 +16,13 @@ namespace UserManagement_Presentation.Controllers
     {
         private readonly IUser _repo;
         private readonly UserManagementContext _context;
+        private readonly IDistributedCache distributedCache;
 
-        public UsersController(IUser repo, UserManagementContext context)
+        public UsersController(IUser repo, UserManagementContext context, IDistributedCache distributedCache)
         {
             _repo = repo;
             _context = context;
+            this.distributedCache = distributedCache;
         }
 
         [HttpGet("AllUsers")]
@@ -135,6 +140,23 @@ namespace UserManagement_Presentation.Controllers
             await _repo.DeleteAllAsync();
             return Ok();
         }
-
+        //[HttpGet("getAllWithRedis")]
+        //public async Task<IActionResult> GetAllWithRedis()
+        //{
+        //    var cacheKey = "userList";
+        //    string serialisedAllUsers;    
+        //    var userList  = await _repo.GetAllAsync();
+        //    var redisUserList = distributedCache.GetAsync(cacheKey);
+        //    if (redisUserList != null)
+        //    {
+        //        serialisedAllUsers = Encoding.UTF8.GetString(redisUserList);
+        //        userList = JsonConvert.DeserializeObject<IEnumerable<User>>(redisUserList);
+        //    }
+        //    else
+        //    {
+        //        userList =  await _repo.GetAllAsync();
+        //    }
+        //    return Ok();
+        //}
     }
 }
