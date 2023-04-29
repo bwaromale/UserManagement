@@ -20,6 +20,7 @@ builder.Services.AddStackExchangeRedisCache(options => {
 });
 builder.Services.AddScoped<IRepository<User>, Repository<User>>();
 builder.Services.AddScoped<IUser, UserRepository>();
+builder.Services.AddScoped<ICaching, CachingRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -13,11 +13,13 @@ namespace UserManagement_DataAccess.InterfacesImplementation
     public class UserRepository : Repository<User>, IUser
     {
         private readonly UserManagementContext _context;
+        private readonly ICaching _cacheService;
         private DbSet<User> dbSet;
 
-        public UserRepository(UserManagementContext context) : base(context)
+        public UserRepository(UserManagementContext context, ICaching cacheService) : base(context, cacheService)
         {
             _context = context;
+            _cacheService = cacheService;
             dbSet = _context.Users;
         }
        
