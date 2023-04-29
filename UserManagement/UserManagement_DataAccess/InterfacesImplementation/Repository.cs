@@ -18,7 +18,9 @@ namespace UserManagement_DataAccess.InterfacesImplementation
         }
         public async Task CreateAsync(T entity)
         {
-            await dbSet.AddAsync(entity);
+            var newObj = await dbSet.AddAsync(entity);
+            var expiryTime = DateTimeOffset.Now.AddSeconds(50);
+            _cacheService.SetData<T>($"key{entity}", newObj.Entity, expiryTime);
             await SaveAsync();
         }
 
@@ -47,8 +49,8 @@ namespace UserManagement_DataAccess.InterfacesImplementation
             cacheResult = await dbSet.ToListAsync();
             var expiryTime = DateTimeOffset.Now.AddSeconds(50);
             _cacheService.SetData<IEnumerable<T>>("key", cacheResult, expiryTime);
+            
             return cacheResult;
-            //return await dbSet.ToListAsync();
         }
         public async Task<T> GetAsync(Expression<Func<T, bool>> propertyName)
         {
