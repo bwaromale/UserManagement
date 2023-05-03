@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Usermanagement_Domain.DTOs;
 using Usermanagement_Domain.Interfaces;
 using Usermanagement_Domain.Models;
@@ -8,6 +9,7 @@ namespace UserManagement_Presentation.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUser _userServ;
