@@ -24,6 +24,7 @@ builder.Services.AddStackExchangeRedisCache(options => {
     options.Configuration = "localhost:6379";
 });
 builder.Services.AddScoped<IRepository<User>, Repository<User>>();
+builder.Services.AddScoped<IAuth, AuthRepository>();
 builder.Services.AddScoped<IUser, UserRepository>();
 builder.Services.AddScoped<ICaching, CachingRepository>();
 
